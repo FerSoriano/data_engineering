@@ -24,6 +24,17 @@ class DatabaseConection():
             print('Error: get_conn()')
             exit()
 
+    def close_conn(self) -> None:
+        """ Close connection """
+        try:
+            self.conn.close()
+            print('Connection closed...')
+        except (Exception, psycopg2.DatabaseError ) as error:
+            print(error)
+            print('Error: close_conn()')
+            exit()
+
+
     def validate_table_exists(self, table_name) -> bool:
         with self.conn.cursor() as cursor:
             cursor.execute(f"""
