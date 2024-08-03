@@ -18,7 +18,8 @@ def main(create_tables: bool, create_views: bool, run_etl: bool) -> None:
         "REDSHIFT_PASSWORD" : os.getenv('REDSHIFT_PASSWORD'),
         "REDSHIFT_HOST" : os.getenv('REDSHIFT_HOST'),
         "REDSHIFT_PORT" : os.getenv('REDSHIFT_PORT', '5439'),
-        "REDSHIFT_DBNAME" : os.getenv('REDSHIFT_DBNAME')
+        "REDSHIFT_DBNAME" : os.getenv('REDSHIFT_DBNAME'),
+        "REDSHIFT_SCHEMA" : os.getenv('REDSHIFT_SCHEMA'), 
         }
 
     db = DatabaseConection(config=config)
