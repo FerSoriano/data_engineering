@@ -64,6 +64,8 @@ def main(create_tables: bool, create_views: bool, run_etl: bool) -> None:
     except Exception as error:
             print(error)
             exit()
+    
+    db.close_conn()
 
 if __name__ == "__main__":
     main(create_tables=CREATE_TABLES, create_views=CREATE_VIEWS, run_etl=RUN_ETL)
