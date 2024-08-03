@@ -16,14 +16,17 @@ Lo dividi en 2 carpetas:
     - Insert
     - Select
 - etl
-  - Creé una clase llamada **Medals()** donde está almacenada la logica para la extraccion de los datos de la pagina de los juegos olimpicos: (https://olympics.com/en/paris-2024/medals)
+  - Creé una clase llamada **Medals()** donde está almacenada la logica para la extraccion de los datos de la pagina de los juegos olimpicos: https://olympics.com/en/paris-2024/medals
   - Cree métodos para el proceso de transformación de los datos.
-    Toda esta logica se ejecutara desde el archivo **main.py**. Las credenciales para hacer la conexion a la Base de Datos se guardaron en un .env y se accede a ella por medio del modulo OS.
-    En este archivo agregué 3 constantes que sirven como banderas para saber que se ejecutará:
+
+Toda esta logica se ejecutara desde el archivo **main.py**. Las credenciales para hacer la conexion a la Base de Datos se guardaron en un .env y se accede a ella por medio del modulo OS.
+En este archivo agregué 3 constantes que sirven como banderas para saber que se ejecutará:
+
 - CREATE_TABLES
 - CREATE_VIEWS
 - RUN_ETL
-  Estan almacenan valores booleanos y dan pie a que se ejecutara.
+
+Estan almacenan valores booleanos y dan pie a que se ejecutara.
 
 ### Validaciones
 
@@ -61,4 +64,4 @@ Lo dividi en 2 carpetas:
 
 ### Mejoras
 
-En las proximas entregas tratarde mejorar el codigo en Python, separaré la clase de **DatabaseConection()** en diferentes clases para tener un codigo mas legible y mas orientado a objetos. Tambien me enfocare en revisar el performance de la base de datos y en los comentarios que resiba.
+En las proximas entregas trataré de mejorar el codigo en Python, separaré la clase de **DatabaseConection()** en diferentes clases para tener un codigo mas legible y mas orientado a objetos. Tambien me enfocare en revisar el performance de la base de datos y en los comentarios que resiba.
