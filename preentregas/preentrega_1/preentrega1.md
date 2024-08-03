@@ -33,6 +33,16 @@ Estan almacenan valores booleanos y dan pie a que se ejecutara.
 - La base de datos tiene una columna de fecha que toma la ultima ejecucion del preoceso.
 - Solo se puede ejecutar una vez al dia para evitar duplicidad en los datos.
 
+#### Queries:
+
+Dejo las consultas que se pueden hacer para ver los datos en la BBDD:
+
+- SELECT \* FROM fer8f10_coderhouse.stg_executionlog;
+- SELECT \* FROM fer8f10_coderhouse.stg_medallero;
+- SELECT \* FROM fer8f10_coderhouse.edw_countries;
+- SELECT \* FROM fer8f10_coderhouse.edw_medallero;
+- SELECT \* FROM fer8f10_coderhouse.edw_medallero_view;
+
 ### Estructura Base de Datos en Redshift
 
 - 4 tablas
