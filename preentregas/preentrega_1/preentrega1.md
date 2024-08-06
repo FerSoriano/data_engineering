@@ -9,7 +9,7 @@ En este proyecto se creó un proceso de ETL. El tema elegido para la extracción
 Lo dividi en 2 carpetas:
 
 - db
-  - Creé una clase llamada **DatabaseConection()** donde está almacenada la logica para la conexion a la base de datos.
+  - Creé una clase llamada **DatabaseConection()** donde está almacenada la logica para la conexión a la base de datos.
   - Creé métodos para hacer las diferentes consultas e instrucciones:
     - Create
     - Update
@@ -31,7 +31,7 @@ Estas almacenan valores booleanos y dan pie a que se ejecutará.
 
 ### Validaciones
 
-- La base de datos tiene una columna de fecha que toma la última ejecución del preoceso.
+- La base de datos tiene una columna de fecha que toma la última ejecución del proceso.
 - Solo se puede ejecutar una vez al dia para evitar duplicidad en los datos.
 
 ### Estructura Base de Datos en Redshift
@@ -41,7 +41,7 @@ Estas almacenan valores booleanos y dan pie a que se ejecutará.
   - 2 de edw
 - 1 vista
 
-#### Justificacion
+#### Justificación
 
 - **Stage tables:**
   - stg_executionLog
@@ -55,7 +55,7 @@ Estas almacenan valores booleanos y dan pie a que se ejecutará.
   - edw_coutries
     - Creé esta tabla para almacenar los paises y asignarles un ID, esto ayudará a relacionar con las otras tablas para crear diferentes tipos de analisis y vistas.
   - edw_medallero
-    - Aqui se almacenara la data historica, dia a dia se guardarán los datos del medallero olimpico.
+    - Aquí se almacenará la data historica, dia a dia se guardarán los datos del medallero olimpico.
     - En esta tabla se agregaron 2 columnas mas que son:
       - Country_id
       - is_active
