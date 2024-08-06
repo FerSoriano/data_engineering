@@ -2,8 +2,8 @@ import os
 from datetime import datetime
 from dotenv import load_dotenv
 
-from db.connect import DatabaseConection
-from etl.olympics_medals import Medals
+from db import DatabaseConection
+from etl import Medals, Countries
 
 load_dotenv()
 
@@ -29,6 +29,7 @@ def main(create_tables: bool, create_views: bool, run_etl: bool) -> None:
         if create_tables:
             db.create_stage_table_executionLog()
             db.create_stage_table_medallero()
+            db.create_stage_table_countries()
             db.create_edw_table_countries()
             db.create_edw_table_medallero()
         
@@ -43,10 +44,17 @@ def main(create_tables: bool, create_views: bool, run_etl: bool) -> None:
             exit()
 
         if run_etl:
+            # get medals data
             medals = Medals()
             medals.get_response()
             df = medals.get_medals()
+            # get countries data
+            countries = Countries()
+            countries.get_response()
+            df_countries = countries.create_df()
 
+            # Insertar Stage - Countries
+            db.insert_to_stage_table_countries(df=df_countries)
             # Truncar Stage
             db.truncate_stage_table_medallero()
             # Insertar Stage

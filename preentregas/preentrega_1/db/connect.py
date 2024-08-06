@@ -126,6 +126,28 @@ class DatabaseConection():
             self.conn.rollback()
             exit()
 
+    def create_stage_table_countries(self) -> None:
+        """ Create stage table in the database """
+        table_name = 'stg_countries'
+        try:
+            with self.conn.cursor() as cursor:
+                cursor.execute(f"""
+                CREATE TABLE IF NOT EXISTS {self.schema}.{table_name} (
+                    id INT IDENTITY(1,1),
+                    country VARCHAR(255),
+                    alpha2code VARCHAR(2),
+                    alpha3code VARCHAR(3),
+                    numeric VARCHAR(3)
+                );
+                """)
+                self.conn.commit()
+                self.print_table_message(table_name, 1)
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+            self.print_table_message(table_name, 2)
+            self.conn.rollback()
+            exit()
+
     def get_last_execution(self) -> tuple:
         """ Get the last execution """
         table_name = 'stg_executionlog'
@@ -158,6 +180,24 @@ class DatabaseConection():
             self.conn.rollback()
             exit()
 
+    def insert_to_stage_table_countries(self, df) -> None:
+        """ Insert DataFrame into Redshift table """
+        table_name = 'stg_countries'
+        try:
+            with self.conn.cursor() as cursor:
+                for index, row in df.iterrows():
+                    cursor.execute(f"""
+                        INSERT INTO {self.schema}.{table_name} (country, alpha2code, alpha3code, numeric)
+                        VALUES (%s, %s, %s, %s)
+                    """, (row['Country'], row['Alpha-2 code'], row['Alpha-3 code'], row['Numeric']))
+                self.conn.commit()
+                print(f"Data inserted successfully into {table_name}.")
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+            print('Error: insert_to_stage_table_countries()')
+            self.conn.rollback()
+            exit()
+
     def truncate_stage_table_medallero(self) -> None:
         """ Truncate stage table """
         table_name = 'stg_medallero'
@@ -182,7 +222,7 @@ class DatabaseConection():
                         VALUES (%s)
                     """, (last_execution,))
                 self.conn.commit()
-                print("Data inserted successfully into stage.executionLog.")
+                print("Data inserted successfully into stage_executionLog.")
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print('Error: insert_to_stage_table_executionlog()')
@@ -237,7 +277,7 @@ class DatabaseConection():
 		                        ON c.country = m.country;
                     """)
                 self.conn.commit()
-                print("Data inserted successfully into edw.medallero.")
+                print("Data inserted successfully into edw_medallero.")
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print('Error: insert_to_edw_table_medallero()')
@@ -281,7 +321,7 @@ class DatabaseConection():
                     ORDER BY 1 ASC;
                     """)
                 self.conn.commit()
-                print("Data inserted successfully into edw.countries.")
+                print("Data inserted successfully into edw_countries.")
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print('Error: insert_to_edw_table_countries()')

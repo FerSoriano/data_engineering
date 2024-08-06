@@ -17,7 +17,8 @@ Lo dividi en 2 carpetas:
     - Select
 - etl
   - Creé una clase llamada **Medals()** donde está almacenada la logica para la extraccion de los datos de la pagina de los juegos olimpicos: https://olympics.com/en/paris-2024/medals
-  - Cree métodos para el proceso de transformación de los datos.
+  - Creé métodos para el proceso de transformación de los datos.
+  - Por otro lado creé otra clase llamada **Countries()** para obtener los codigos de los paises, estos me servirán en un futuro para cruzaar la informacion y hacer analisis sobre que paises son los que mas medallas ganan por continente o región. La pagina utilizada es: https://www.iban.com/country-codes
 
 Toda esta logica se ejecutara desde el archivo **main.py**. Las credenciales para hacer la conexion a la Base de Datos se guardaron en un .env y se accede a ella por medio del modulo OS.
 En este archivo agregué 3 constantes que sirven como banderas para saber que se ejecutará:
@@ -39,14 +40,15 @@ Dejo las consultas que se pueden hacer para ver los datos en la BBDD:
 
 - SELECT \* FROM fer8f10_coderhouse.stg_executionlog;
 - SELECT \* FROM fer8f10_coderhouse.stg_medallero;
+- SELECT \* FROM fer8f10_coderhouse.stg_countries;
 - SELECT \* FROM fer8f10_coderhouse.edw_countries;
 - SELECT \* FROM fer8f10_coderhouse.edw_medallero;
 - SELECT \* FROM fer8f10_coderhouse.edw_medallero_view;
 
 ### Estructura Base de Datos en Redshift
 
-- 4 tablas
-  - 2 de stage
+- 5 tablas
+  - 3 de stage
   - 2 de edw
 - 1 vista
 
@@ -58,6 +60,8 @@ Dejo las consultas que se pueden hacer para ver los datos en la BBDD:
   - stg_medallero
     - Aqui almacenaré la informacion del dia de actual, en crudo despues de la transformacion en Python, sin agregarle columnas extras.
     - Esta tabla se truncará al inicio de cada ejecucion.
+  - stg_countries
+    - Aqui guardé la informacion de los codigos por pais, esto me servirá en un futuro para sacar analisis segmentado por region
 - **EDW tables:**
   - edw_coutries
     - Creé esta tabla para almacenar los paises y asignarles un ID, esto ayudará a relacionar con las otras tablas para crear diferentes tipos de analisis y vistas.
