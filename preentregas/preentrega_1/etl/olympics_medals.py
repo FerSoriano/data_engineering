@@ -29,7 +29,7 @@ class Medals():
         values = [span.get_text(strip=True) for span in spans]
         return values
 
-    def get_medals(self) -> pd.DataFrame:
+    def get_medals(self, execution_date) -> pd.DataFrame:
         # Selecciona el elemento del medallero usando el XPath
         medallero_div = self.soup.select_one('#p2024-main-content > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) > div > div:nth-of-type(2)')
 
@@ -50,13 +50,13 @@ class Medals():
             # Crear DataFrame
             self.medallero_df = pd.DataFrame(medals_list ,columns=['Gold', 'Silver', 'Bronze'])
             # Se agregan los paises al DataFrame
-            countries = self.get_by_span('span.elhe7kv5.emotion-srm-uu3d5n')
+            countries = self.get_by_span('span.euzfwma5.emotion-srm-uu3d5n')
             self.medallero_df.insert(0,'Country', countries, True)
 
             # Obtener el total de medallas
             self.medallero_df['Total'] = self.medallero_df.apply(lambda x: int(x['Gold']) + int(x['Silver']) + int(x['Bronze']), axis=1)
             # Agregra fecha de ejecucion
-            self.medallero_df['execution_date'] = datetime.now().strftime("%Y-%m-%d")
+            self.medallero_df['execution_date'] = execution_date
             # Settear indice a 1
             self.medallero_df.index += 1
         

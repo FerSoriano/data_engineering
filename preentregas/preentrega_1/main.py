@@ -2,16 +2,17 @@ import os
 from datetime import datetime
 from dotenv import load_dotenv
 
-from db import DatabaseConection
+from db import Database
 from etl import Medals, Countries
 
 load_dotenv()
 
-CREATE_TABLES = True
-CREATE_VIEWS = True
+CREATE_TABLES = False
+CREATE_VIEWS = False
+EXTRACT_COUNTRIES = False
 RUN_ETL = True
 
-def main(create_tables: bool, create_views: bool, run_etl: bool) -> None:
+def main(create_tables: bool, create_views: bool, extract_countries: bool,run_etl: bool) -> None:
 
     config = {
         "REDSHIFT_USERNAME" : os.getenv('REDSHIFT_USERNAME'),
@@ -22,10 +23,18 @@ def main(create_tables: bool, create_views: bool, run_etl: bool) -> None:
         "REDSHIFT_SCHEMA" : os.getenv('REDSHIFT_SCHEMA'), 
         }
 
-    db = DatabaseConection(config=config)
+    db = Database(config=config)
     db.get_conn()
 
     try:
+        last_execution = db.get_last_execution()
+        today = datetime.now().strftime("%Y-%m-%d")
+
+        if today == str(last_execution):
+            print('Execution completed, the process has already been executed today. Data not added.')
+            db.close_conn()
+            exit()
+
         if create_tables:
             db.create_stage_table_executionLog()
             db.create_stage_table_medallero()
@@ -36,25 +45,19 @@ def main(create_tables: bool, create_views: bool, run_etl: bool) -> None:
         if create_views:
             db.create_edw_view_medallero()
 
-        last_execution = db.get_last_execution()
-        today = datetime.now().strftime("%Y-%m-%d")
-
-        if today == str(last_execution):
-            print('Execution completed, the process has already been executed today. Data not added.')
-            exit()
+        if extract_countries:
+            # get countries data
+            countries = Countries()
+            countries.get_response()
+            df_countries = countries.create_df()
+            # Insertar Stage - Countries
+            db.insert_to_stage_table_countries(df=df_countries)
 
         if run_etl:
             # get medals data
             medals = Medals()
             medals.get_response()
-            df = medals.get_medals()
-            # get countries data
-            countries = Countries()
-            countries.get_response()
-            df_countries = countries.create_df()
-
-            # Insertar Stage - Countries
-            db.insert_to_stage_table_countries(df=df_countries)
+            df = medals.get_medals(today)
             # Truncar Stage
             db.truncate_stage_table_medallero()
             # Insertar Stage
@@ -77,4 +80,4 @@ def main(create_tables: bool, create_views: bool, run_etl: bool) -> None:
     db.close_conn()
 
 if __name__ == "__main__":
-    main(create_tables=CREATE_TABLES, create_views=CREATE_VIEWS, run_etl=RUN_ETL)
+    main(create_tables=CREATE_TABLES, create_views=CREATE_VIEWS, extract_countries=EXTRACT_COUNTRIES,run_etl=RUN_ETL)
