@@ -6,7 +6,13 @@ from bs4 import BeautifulSoup
 
 class Medals():
     def __init__(self) -> None:
+        self.closing_date = '2024-08-11'
         pass
+
+    def valid_dates(self, today) -> bool:
+        if today <= self.closing_date:
+            return True
+        return False
 
     def get_response(self) -> object:
         print("Getting data...")

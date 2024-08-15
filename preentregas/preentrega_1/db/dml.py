@@ -33,8 +33,13 @@ class DataManipulation(CreateTables):
                 for index, row in df.iterrows():
                     cursor.execute(f"""
                         INSERT INTO {self.schema}.{table_name} (country, alpha2code, alpha3code, numeric)
-                        VALUES (%s, %s, %s, %s)
-                    """, (row['Country'], row['Alpha-2 code'], row['Alpha-3 code'], row['Numeric']))
+                        SELECT %s, %s, %s, %s
+                        WHERE NOT EXISTS (
+                            SELECT 1
+                            FROM {self.schema}.{table_name}
+                            WHERE country = %s 
+                        );
+                    """, (row['Country'], row['Alpha-2 code'], row['Alpha-3 code'], row['Numeric'], row['Country']))
                 self.conn.commit()
                 print(f"Data inserted successfully into {table_name}.")
         except (Exception, psycopg2.DatabaseError) as error:
