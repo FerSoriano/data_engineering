@@ -9,7 +9,7 @@ load_dotenv()
 
 CREATE_TABLES = False
 CREATE_VIEWS = False
-EXTRACT_COUNTRIES = False
+EXTRACT_COUNTRIES = True
 RUN_ETL = True
 
 def main(create_tables: bool, create_views: bool, extract_countries: bool,run_etl: bool) -> None:
@@ -56,22 +56,28 @@ def main(create_tables: bool, create_views: bool, extract_countries: bool,run_et
         if run_etl:
             # get medals data
             medals = Medals()
-            medals.get_response()
-            df = medals.get_medals(today)
-            # Truncar Stage
-            db.truncate_stage_table_medallero()
-            # Insertar Stage
-            db.insert_to_stage_table_medallero(df=df)
-            # Insertar Execution Log
-            db.insert_to_stage_table_executionlog(today)
-            # Insertar Stage
-            db.insert_to_edw_table_countries()
-            # Actualizar Is_Active a 0
-            db.update_edw_table_medallero()
-            # Insertar en EDW
-            db.insert_to_edw_table_medallero()
-            
-            print('ETL process completed successfully...')
+
+            if medals.valid_dates(today):
+                medals.get_response()
+                df = medals.get_medals(today)
+                # Truncar Stage
+                db.truncate_stage_table_medallero()
+                # Insertar Stage
+                db.insert_to_stage_table_medallero(df=df)
+                # Insertar Execution Log
+                db.insert_to_stage_table_executionlog(today)
+                # Insertar Stage
+                db.insert_to_edw_table_countries()
+                # Actualizar Is_Active a 0
+                db.update_edw_table_medallero()
+                # Insertar en EDW
+                db.insert_to_edw_table_medallero()
+                
+                print('ETL process completed successfully...')
+            else:
+                print('The Olympic Games have ended ):')
+                db.close_conn()
+                exit()
     
     except Exception as error:
             print(error)
