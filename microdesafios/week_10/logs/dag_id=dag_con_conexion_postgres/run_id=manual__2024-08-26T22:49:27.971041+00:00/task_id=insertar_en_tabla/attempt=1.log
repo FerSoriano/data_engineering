@@ -1,0 +1,36 @@
+[2024-08-26 22:49:29,100] {taskinstance.py:1179} INFO - Dependencies all met for <TaskInstance: dag_con_conexion_postgres.insertar_en_tabla manual__2024-08-26T22:49:27.971041+00:00 [queued]>
+[2024-08-26 22:49:29,104] {taskinstance.py:1179} INFO - Dependencies all met for <TaskInstance: dag_con_conexion_postgres.insertar_en_tabla manual__2024-08-26T22:49:27.971041+00:00 [queued]>
+[2024-08-26 22:49:29,104] {taskinstance.py:1376} INFO - 
+--------------------------------------------------------------------------------
+[2024-08-26 22:49:29,104] {taskinstance.py:1377} INFO - Starting attempt 1 of 6
+[2024-08-26 22:49:29,104] {taskinstance.py:1378} INFO - 
+--------------------------------------------------------------------------------
+[2024-08-26 22:49:29,110] {taskinstance.py:1397} INFO - Executing <Task(PostgresOperator): insertar_en_tabla> on 2024-08-26 22:49:27.971041+00:00
+[2024-08-26 22:49:29,111] {standard_task_runner.py:52} INFO - Started process 228 to run task
+[2024-08-26 22:49:29,113] {standard_task_runner.py:79} INFO - Running: ['***', 'tasks', 'run', 'dag_con_conexion_postgres', 'insertar_en_tabla', 'manual__2024-08-26T22:49:27.971041+00:00', '--job-id', '10', '--raw', '--subdir', 'DAGS_FOLDER/dag-postgres.py', '--cfg-path', '/tmp/tmpvav8smc9', '--error-file', '/tmp/tmpv_f5ga09']
+[2024-08-26 22:49:29,114] {standard_task_runner.py:80} INFO - Job 10: Subtask insertar_en_tabla
+[2024-08-26 22:49:29,139] {task_command.py:371} INFO - Running <TaskInstance: dag_con_conexion_postgres.insertar_en_tabla manual__2024-08-26T22:49:27.971041+00:00 [running]> on host 419b05bd8ee5
+[2024-08-26 22:49:29,170] {taskinstance.py:1591} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=DavidBU
+AIRFLOW_CTX_DAG_ID=dag_con_conexion_postgres
+AIRFLOW_CTX_TASK_ID=insertar_en_tabla
+AIRFLOW_CTX_EXECUTION_DATE=2024-08-26T22:49:27.971041+00:00
+AIRFLOW_CTX_TRY_NUMBER=1
+AIRFLOW_CTX_DAG_RUN_ID=manual__2024-08-26T22:49:27.971041+00:00
+[2024-08-26 22:49:29,175] {base.py:68} INFO - Using connection ID 'postgres_localhost' for task execution.
+[2024-08-26 22:49:29,182] {dbapi.py:231} INFO - Running statement: 
+            insert into fin_mundo_fs (dt,pais) values ('12-12-2025','Colombia');
+            insert into fin_mundo_fs (dt,pais) values ('11-08-2035','Brasil');
+            insert into fin_mundo_fs (dt,pais) values ('8-09-2030','Argentina');
+            insert into fin_mundo_fs (dt,pais) values ('3-07-2045','Chile');
+            insert into fin_mundo_fs (dt,pais) values ('7-11-2028','Ecuador');
+            insert into fin_mundo_fs (dt,pais) values ('9-03-2032','Peru');
+            insert into fin_mundo_fs (dt,pais) values ('8-08-2026','Uruguay');
+            insert into fin_mundo_fs (dt,pais) values ('2-05-2037','Paraguay');
+            insert into fin_mundo_fs (dt,pais) values ('12-12-2080','Venezuela');
+            insert into fin_mundo_fs (dt,pais) values ('11-12-2071','Mexico');
+        , parameters: None
+[2024-08-26 22:49:29,183] {dbapi.py:239} INFO - Rows affected: 1
+[2024-08-26 22:49:29,189] {taskinstance.py:1420} INFO - Marking task as SUCCESS. dag_id=dag_con_conexion_postgres, task_id=insertar_en_tabla, execution_date=20240826T224927, start_date=20240826T224929, end_date=20240826T224929
+[2024-08-26 22:49:29,212] {local_task_job.py:156} INFO - Task exited with return code 0
+[2024-08-26 22:49:29,225] {local_task_job.py:273} INFO - 0 downstream tasks scheduled from follow-on schedule check
